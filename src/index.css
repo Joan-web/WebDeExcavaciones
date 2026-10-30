@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', sans-serif;
+  --font-display: 'Barlow Condensed', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-width: 320px;
+    background: #ffffff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #e0b45c;
+    color: #333233;
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .scroll-progress {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: #e0b45c;
+    pointer-events: none;
+    transform: scaleX(var(--scroll-progress, 0));
+    transform-origin: left;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .nav-link {
+    position: relative;
+    padding-block: 0.5rem;
+  }
+
+  .nav-link::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    content: '';
+    background: #e0b45c;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 240ms ease;
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .section-label::before {
+    width: 2rem;
+    height: 2px;
+    content: '';
+    background: currentColor;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .form-field > span {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    width: 100%;
+    border: 1px solid rgb(51 50 51 / 20%);
+    border-radius: 0;
+    background: #fff;
+    padding: 1rem;
+    color: #333233;
+    outline: none;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: #4f81c2;
+    box-shadow: 0 0 0 3px rgb(79 129 194 / 12%);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+  }
+
+  .machine-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .machine-carousel::before,
+  .machine-carousel::after {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    width: clamp(1rem, 5vw, 5rem);
+    content: '';
+    pointer-events: none;
+  }
+
+  .machine-carousel::before {
+    left: 0;
+    background: linear-gradient(90deg, #fff, transparent);
+  }
+
+  .machine-carousel::after {
+    right: 0;
+    background: linear-gradient(-90deg, #fff, transparent);
+  }
+
+  .machine-track {
+    display: flex;
+    width: max-content;
+    gap: 1.25rem;
+    animation: machine-scroll 38s linear infinite;
+    will-change: transform;
+  }
+
+  .machine-set {
+    display: flex;
+    flex-shrink: 0;
+    gap: 1.25rem;
+  }
+
+  .machine-card {
+    position: relative;
+    width: clamp(17rem, 31vw, 29rem);
+    height: clamp(21rem, 34vw, 30rem);
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #333233;
+  }
+
+  .machine-card::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: linear-gradient(0deg, rgb(51 50 51 / 88%), transparent 46%);
+  }
+
+  .machine-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .machine-card:hover img {
+    transform: scale(1.06);
+  }
+
+  .machine-card figcaption {
+    position: absolute;
+    z-index: 1;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: white;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .machine-card figcaption span {
+    color: #e0b45c;
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes machine-scroll {
+  to {
+    transform: translateX(calc(-50% - 0.625rem));
+  }
+}
+
+/*
+ * Kept outside Tailwind's cascade layers so transition utilities on cards
+ * cannot override the reveal animation.
+ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(56px) scale(0.985);
+  transition:
+    opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal='left'] {
+  transform: translateX(-64px);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translate(0) scale(1);
+}
+
+.stagger-reveal > [data-reveal]:nth-child(2) {
+  transition-delay: 140ms;
+}
+
+.stagger-reveal > [data-reveal]:nth-child(3) {
+  transition-delay: 280ms;
+}
+
+.stagger-reveal > [data-reveal]:nth-child(4) {
+  transition-delay: 420ms;
+}
+
+.stagger-reveal > [data-reveal]:nth-child(5) {
+  transition-delay: 560ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+
+}

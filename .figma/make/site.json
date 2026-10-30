@@ -1,0 +1,10 @@
+{
+  "description": "Presenta los servicios de excavación y maquinaria de una empresa local, ayudando a clientes a conocer sus trabajos y solicitar información.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
